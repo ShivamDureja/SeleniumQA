@@ -1,10 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-
 def Loader(url):
 
-    
     options = Options()
     options._binary_location = "C:\Program Files\Google\Chrome\Application\chrome.exe"
     driver = webdriver.Chrome(

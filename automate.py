@@ -1,7 +1,9 @@
+from cgitb import text
 from selenium.webdriver.common.by import By
 import time
 from bs4 import BeautifulSoup
-
+from htmlToPdf import convert_html_to_pdf
+from xhtml2pdf import pisa 
 
 def automate(driver,dataList):
     time.sleep(2)
@@ -9,6 +11,7 @@ def automate(driver,dataList):
     btn = nav.find_elements(by=By.TAG_NAME, value = "button")
     fSets = getQuestionDivsFromWeb(driver)
     i = 0
+    NotFoundQues = ""
     for fset in fSets:
         ques = None
         selectedFSet = None
@@ -25,9 +28,15 @@ def automate(driver,dataList):
             selectOption(selectedFSet,ans)
             time.sleep(2)
         else:
+            NotFoundQues = NotFoundQues + fset.get_attribute('innerHTML')
             if(i == len(fSets)):
                 continue
             traverse(btn[0],1)
+    if(NotFoundQues != ""):
+        OutputFileName = "NotFoundQues.pdf"
+        pisa.showLogging()
+        convert_html_to_pdf(NotFoundQues,OutputFileName)
+
 
 
 def traverse(path,clicks):
