@@ -1,7 +1,8 @@
 from selenium.webdriver.common.by import By
 import time
 from bs4 import BeautifulSoup
-from slowTyping import slow_type
+from humanMimicking import slow_type
+from humanMimicking import mouseMovement
 
 quesCount = 9
 currentIndex = 0
@@ -11,7 +12,6 @@ def automate(driver, dataList):
     global quesCount
     time.sleep(2)
     i = 0
-    NotFoundQues = ""
     # traverse to each and every question
     for i in range(quesCount):
         # list to store all the wrapper elements of every question
@@ -39,7 +39,7 @@ def automate(driver, dataList):
             # find the ans to the corresponding question value
             ans = soup.find(text=f"{currQ[5]}")
             val = currQ[1]
-            # select the correct option 
+            # to select the correct option
             selectOption(selectedFSet, ans, val, currQ[6])
             time.sleep(2)
         else:
@@ -51,6 +51,7 @@ def automate(driver, dataList):
 
 def SubmitForm():
     print("Form Submitted")
+
 
 # to find the parent element of buttons
 def findNav(driver, index):
@@ -67,6 +68,7 @@ def maintainIndex(direction):
         currentIndex = currentIndex + 1
     else:
         currentIndex = currentIndex - 1
+
 
 # to traverse the form if question is not present
 def traverse(index, clicks, driver):
@@ -99,6 +101,7 @@ def traverse(index, clicks, driver):
 def getQuestionDivsFromWeb(driver):
     fSets = driver.find_elements(by=By.XPATH, value="//*[@data-qa='question-wrapper']")
     return fSets
+
 
 # to select the correct option according to its type
 def selectOption(fieldset, answer, val, qType):
