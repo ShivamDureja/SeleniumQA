@@ -7,7 +7,4 @@ local_path = "D:\\SMDEVOPS\\SeleniumQA\\updatedQues.xlsx"
 driver = Loader(page_url)
 my_list = fetchList(local_path)
 # print(my_list)
-automate(driver,my_list)
-
-
-
+automate(driver, my_list)

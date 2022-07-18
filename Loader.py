@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
+# it loads the web page and return the driver
 def Loader(url):
 
     options = Options()
@@ -12,4 +13,3 @@ def Loader(url):
     driver.implicitly_wait(20)
     driver.get(url)
     return driver
-    
