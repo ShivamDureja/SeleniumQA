@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 import time
 from bs4 import BeautifulSoup
+from slowTyping import slow_type
 # from htmlToPdf import convert_html_to_pdf
 # from xhtml2pdf import pisa 
 
@@ -100,14 +101,14 @@ def selectOption(fieldset,answer,val,qType):
     elif(qType == "fib"):
         option = fieldset.find_element(by=By.TAG_NAME, value="textarea")
         option.click()
-        option.send_keys(val)
+        slow_type(option,val)
         time.sleep(2)
         clickOk = fieldset.find_element(by=By.TAG_NAME, value="button")
         clickOk.click()
     elif(qType == "linked"):
         option = fieldset.find_element(by=By.TAG_NAME, value="input")
         option.click()
-        option.send_keys(val)
+        slow_type(option,val)
         time.sleep(2)
         clickOk = fieldset.find_element(by=By.TAG_NAME, value="button")
         clickOk.click()
