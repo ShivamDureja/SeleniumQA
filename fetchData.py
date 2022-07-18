@@ -15,7 +15,7 @@ def fetchList(localPath):
 
     # to find max value of col for a row
     colCount = 0
-    for cell in ws[2]:
+    for cell in ws[1]:
         if not cell.value is None:
             colCount += 1
 
