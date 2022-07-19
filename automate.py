@@ -3,12 +3,14 @@ import time
 from bs4 import BeautifulSoup
 from humanMimicking import slow_type
 from humanMimicking import mouseMovement
+import pyautogui
+
 
 quesCount = 9
 currentIndex = 0
 
 # main automate function
-def automate(driver, dataList):
+def automate(driver, dataList,panelH):
     global quesCount
     time.sleep(2)
     i = 0
@@ -40,7 +42,7 @@ def automate(driver, dataList):
             ans = soup.find(text=f"{currQ[5]}")
             val = currQ[1]
             # to select the correct option
-            selectOption(selectedFSet, ans, val, currQ[6])
+            selectOption(selectedFSet, ans, val, currQ[6],panelH)
             time.sleep(2)
         else:
             if i == len(fSets):
@@ -104,11 +106,21 @@ def getQuestionDivsFromWeb(driver):
 
 
 # to select the correct option according to its type
-def selectOption(fieldset, answer, val, qType):
+def selectOption(fieldset, answer, val, qType,panelH):
     if qType == "mcq":
         option = fieldset.find_element(
             by=By.XPATH, value=f".//div[@aria-label='{answer}']"
         )
+        time.sleep(3)
+        locate = option.location
+        size = option.size
+            
+        xPos = locate["x"]
+        yPos = locate["y"]
+        print(f"x position : {xPos}")
+        print(f"y position : {yPos}")
+        mouseMovement(locate,size,panelH)
+        # pyautogui.click(x=xPos,y=yPos)
         option.click()
         time.sleep(2)
     elif qType == "fib":
@@ -121,7 +133,12 @@ def selectOption(fieldset, answer, val, qType):
     elif qType == "linked":
         option = fieldset.find_element(by=By.TAG_NAME, value="input")
         option.click()
+        # locate = option.location
+        # print(locate["x"])
         slow_type(option, val)
         time.sleep(2)
         clickOk = fieldset.find_element(by=By.TAG_NAME, value="button")
+        # locate = clickOk.location
+        # size = clickOk.size
+        # mouseMovement(locate,size,panelH)
         clickOk.click()
