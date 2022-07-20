@@ -1,12 +1,13 @@
 from Loader import Loader
 from fetchData import fetchList
 from automate import automate
+from env import *
 
-page_url = "https://tzflz53oiau.typeform.com/to/n7eaeDxl"
-local_path = "D:\\SMDEVOPS\\SeleniumQA\\updatedQues.xlsx"
+page_url = pageUrl
+local_path = qFile_path
 driver = Loader(page_url)
 my_list = fetchList(local_path)
-panelHeight = driver.execute_script('return window.outerHeight - window.innerHeight;')
-# print(my_list)
 driver.maximize_window()
-automate(driver, my_list,panelHeight)
+panelHeight = driver.execute_script("return window.outerHeight - window.innerHeight;")
+panelWidth = driver.execute_script("return window.innerWidth;")
+automate(driver, my_list, panelHeight, panelWidth)

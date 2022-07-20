@@ -1,16 +1,16 @@
 from selenium.webdriver.common.by import By
-import time
 from bs4 import BeautifulSoup
 from humanMimicking import slow_type
 from humanMimicking import mouseMovement
 import pyautogui
+import time
+from env import *
 
-
-quesCount = 9
+quesCount = QuesCount
 currentIndex = 0
 
 # main automate function
-def automate(driver, dataList,panelH):
+def automate(driver, dataList, panelH, panelWidth):
     global quesCount
     time.sleep(2)
     i = 0
@@ -42,7 +42,7 @@ def automate(driver, dataList,panelH):
             ans = soup.find(text=f"{currQ[5]}")
             val = currQ[1]
             # to select the correct option
-            selectOption(selectedFSet, ans, val, currQ[6],panelH)
+            selectOption(selectedFSet, ans, val, currQ[6], panelH, panelWidth)
             time.sleep(2)
         else:
             if i == len(fSets):
@@ -101,44 +101,38 @@ def traverse(index, clicks, driver):
 
 # returns all wrapper elements from page in form a list
 def getQuestionDivsFromWeb(driver):
-    fSets = driver.find_elements(by=By.XPATH, value="//*[@data-qa='question-wrapper']")
+    fSets = driver.find_elements(by=By.XPATH, value=WrapperValue)
     return fSets
 
 
 # to select the correct option according to its type
-def selectOption(fieldset, answer, val, qType,panelH):
+def selectOption(fieldset, answer, val, qType, panelH, panelWidth):
     if qType == "mcq":
         option = fieldset.find_element(
             by=By.XPATH, value=f".//div[@aria-label='{answer}']"
         )
-        time.sleep(3)
         locate = option.location
         size = option.size
-            
-        xPos = locate["x"]
-        yPos = locate["y"]
-        print(f"x position : {xPos}")
-        print(f"y position : {yPos}")
-        mouseMovement(locate,size,panelH)
-        # pyautogui.click(x=xPos,y=yPos)
+        mouseMovement(locate, size, panelH, panelWidth)
         option.click()
-        time.sleep(2)
     elif qType == "fib":
-        option = fieldset.find_element(by=By.TAG_NAME, value="textarea")
+        option = fieldset.find_element(by=By.TAG_NAME, value=FibValue)
         option.click()
+        locate = option.location
+        size = option.size
+        mouseMovement(locate, size, panelH, panelWidth)
         slow_type(option, val)
         time.sleep(2)
-        clickOk = fieldset.find_element(by=By.TAG_NAME, value="button")
-        clickOk.click()
+        pressOk(fieldset)
     elif qType == "linked":
-        option = fieldset.find_element(by=By.TAG_NAME, value="input")
-        option.click()
-        # locate = option.location
-        # print(locate["x"])
+        option = fieldset.find_element(by=By.TAG_NAME, value=LinkedValue)
+        locate = option.location
+        length = option.size
+        mouseMovement(locate, length, panelH, panelWidth)
         slow_type(option, val)
-        time.sleep(2)
-        clickOk = fieldset.find_element(by=By.TAG_NAME, value="button")
-        # locate = clickOk.location
-        # size = clickOk.size
-        # mouseMovement(locate,size,panelH)
-        clickOk.click()
+        pressOk(fieldset)
+
+
+def pressOk(parent):
+    clickOk = parent.find_element(by=By.TAG_NAME, value="button")
+    clickOk.click()
