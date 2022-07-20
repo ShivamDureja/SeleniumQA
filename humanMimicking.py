@@ -10,8 +10,34 @@ def slow_type(pageElem, pageInput):
         time.sleep(float(random.uniform(0.05, 0.3)))
         pageElem.send_keys(letter)
 
+# def mouseMovementV2(location,panelHeight,panelWidth):
+#     clickAbleArea = 8
+#     centerMouse(panelHeight,panelWidth)
+#     # start = pyautogui.position()
+#     # print(start)
 
-def mouseMovement(location, size, panelHeight):
+# def centerMouse(panelHeight,panelWidth):
+#     x = 0
+#     y = panelHeight + 0
+#     # print(f"X CENTER : {x}, Y CENTER: {y}")
+#     pyautogui.moveTo(x=x,y=y,duration=2,tween=pyautogui.easeInOutQuad)
+
+
+
+def mouseMovement(location, size, panelHeight,panelWidth):
+    # mouseMovementV2(location,panelHeight,panelWidth)
+    # return    
+    xPos = location["x"]
+    yPos = location["y"]
+    sizeX = size["width"]
+    sizeY = size["height"]
+    xFinal = xPos + sizeX/2;
+    yFinal = yPos + sizeY/2;
+    print(f"xFinal : {xFinal}")
+    print(f"yFinal : {yFinal}")
+    pyautogui.moveTo(x=xFinal,y=yFinal+panelHeight+85,duration=1,tween=pyautogui.easeInOutQuad)
+    print(pyautogui.position())
+    return
     x, relY = location["x"], location["y"]  ##abs X and relative Y
     absY = relY + panelHeight
     w, h = size["width"], size["height"]
@@ -48,13 +74,14 @@ def mouseMovement(location, size, panelHeight):
     # Create the bezier curve
     curve = bezier.Curve(points, degree)
 
-    curve_steps = 50  # How many points the curve should be split into. Each is a separate pyautogui.moveTo() execution
-    delay = 0.003  # Time between movements. 1/curve_steps = 1 second for entire curve
+    curve_steps = 10  # How many points the curve should be split into. Each is a separate pyautogui.moveTo() execution
+    delay = 0.00001  # Time between movements. 1/curve_steps = 1 second for entire curve
 
     # Move the mouse
     for j in range(1, curve_steps + 1):
         # The evaluate method takes a float from [0.0, 1.0] and returns the coordinates at that point in the curve
         # Another way of thinking about it is that i/steps gets the coordinates at (100*i/steps) percent into the curve
         x, y = curve.evaluate(j / curve_steps)
+        print(f"X:{x} Y:{y}")
         pyautogui.moveTo(x, y)  # Move to point in curve
         pyautogui.sleep(delay)  # Wait delay
