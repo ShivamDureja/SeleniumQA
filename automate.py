@@ -10,7 +10,7 @@ quesCount = QuesCount
 currentIndex = 0
 
 # main automate function
-def automate(driver, dataList, panelH, panelWidth):
+def automate(driver, dataList, users_list, panelH, panelWidth):
     global quesCount
     time.sleep(2)
     i = 0
@@ -42,7 +42,9 @@ def automate(driver, dataList, panelH, panelWidth):
             ans = soup.find(text=f"{currQ[5]}")
             val = currQ[1]
             # to select the correct option
-            selectOption(selectedFSet, ans, val, currQ[6], panelH, panelWidth)
+            selectOption(
+                selectedFSet, ans, val, currQ[6], panelH, panelWidth, users_list
+            )
             time.sleep(2)
         else:
             if i == len(fSets):
@@ -106,7 +108,7 @@ def getQuestionDivsFromWeb(driver):
 
 
 # to select the correct option according to its type
-def selectOption(fieldset, answer, val, qType, panelH, panelWidth):
+def selectOption(fieldset, answer, val, qType, panelH, panelWidth, users_list):
     if qType == "mcq":
         option = fieldset.find_element(
             by=By.XPATH, value=f".//div[@aria-label='{answer}']"
@@ -129,7 +131,16 @@ def selectOption(fieldset, answer, val, qType, panelH, panelWidth):
         locate = option.location
         length = option.size
         mouseMovement(locate, length, panelH, panelWidth)
-        slow_type(option, val)
+        if val == "name":
+            slow_type(option, users_list[0])
+        if val == "email":
+            slow_type(option, users_list[1])
+        if val == "phone":
+            slow_type(option, str(users_list[2]))
+        if val == "address":
+            slow_type(option, users_list[3])
+        if val == "state":
+            slow_type(option, users_list[4])
         pressOk(fieldset)
 
 
