@@ -3,6 +3,7 @@
 ##### for main.py #####
 pageUrl = "https://tzflz53oiau.typeform.com/to/n7eaeDxl"
 qFile_path = "D:\\SMDEVOPS\\SeleniumQA\\updatedQues.xlsx"
+usersFilePath = "D:\\SMDEVOPS\\SeleniumQA\\users.xlsx"
 
 ##### for automate.py #####
 QuesCount = 9
