@@ -10,7 +10,7 @@ QuesCount = 9
 WrapperValue = "//*[@data-qa='question-wrapper']"
 # value for answer element of type FIB (Tag Name)
 FibValue = "textarea"
-# value for answer element of type FIB (Tag Name)
+# value for answer element of type Linked (Tag Name)
 LinkedValue = "input"
 
 ##### for Loader.py #####
